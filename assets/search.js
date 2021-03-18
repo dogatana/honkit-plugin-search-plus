@@ -51,12 +51,17 @@ require([
         $searchQuery.text(res.query)
 
         // Create an <li> element for each result
+        let seq = 1;
         res.results.forEach(function (item) {
             var $li = $('<li>', {
                 'class': 'search-results-item'
             })
 
             var $title = $('<h3>')
+            $title.prepend($('<span>', {
+                'text' : '[' + (seq + 1) + '] '
+            }))
+            seq++;
 
             var $link = $('<a>', {
                 'href': gitbook.state.basePath + '/' + item.url + '?h=' + encodeURIComponent(res.query),
