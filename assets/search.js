@@ -59,7 +59,7 @@ require([
 
             const $title = $('<h3>')
             $title.prepend($('<span>', {
-                'text' : '[' + (seq + 1) + '] '
+                'text' : '[' + seq + '] '
             }));
             seq++;
 
