@@ -42,3 +42,7 @@
 #book-search-results.search-plus .search-results .has-results .search-results-item {
   color: inherit;
 }
+
+#book-search-results.search-plus .search-results .has-results .search-results-item span {
+  color: #4183c4;
+}
