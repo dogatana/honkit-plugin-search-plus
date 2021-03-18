@@ -32,59 +32,59 @@ require([
     }
 
     function displayResults(res) {
-        $bookSearchResults = $('#book-search-results')
-        $searchList = $bookSearchResults.find('.search-results-list')
-        $searchTitle = $bookSearchResults.find('.search-results-title')
-        $searchResultsCount = $searchTitle.find('.search-results-count')
-        $searchQuery = $searchTitle.find('.search-query')
+        const $bookSearchResults = $('#book-search-results');
+        const $searchList = $bookSearchResults.find('.search-results-list');
+        const $searchTitle = $bookSearchResults.find('.search-results-title');
+        const $searchResultsCount = $searchTitle.find('.search-results-count');
+        const $searchQuery = $searchTitle.find('.search-query');
 
-        $bookSearchResults.addClass('open')
+        $bookSearchResults.addClass('open');
 
-        var noResults = res.count === 0
-        $bookSearchResults.toggleClass('no-results', noResults)
+        const noResults = res.count === 0;
+        $bookSearchResults.toggleClass('no-results', noResults);
 
         // Clear old results
-        $searchList.empty()
+        $searchList.empty();
 
         // Display title for research
-        $searchResultsCount.text(res.count)
-        $searchQuery.text(res.query)
+        $searchResultsCount.text(res.count);
+        $searchQuery.text(res.query);
 
         // Create an <li> element for each result
         let seq = 1;
         res.results.forEach(function (item) {
-            var $li = $('<li>', {
+            const $li = $('<li>', {
                 'class': 'search-results-item'
-            })
+            });
 
-            var $title = $('<h3>')
+            const $title = $('<h3>')
             $title.prepend($('<span>', {
                 'text' : '[' + (seq + 1) + '] '
-            }))
+            }));
             seq++;
 
-            var $link = $('<a>', {
+            const $link = $('<a>', {
                 'href': gitbook.state.basePath + '/' + item.url + '?h=' + encodeURIComponent(res.query),
                 'text': item.title,
                 'data-is-search': 1
-            })
+            });
 
             if ($link[0].href.split('?')[0] === window.location.href.split('?')[0]) {
-                $link[0].setAttribute('data-need-reload', 1)
+                $link[0].setAttribute('data-need-reload', 1);
             }
 
-            var content = item.body.trim()
+            let content = item.body.trim();
             if (content.length > MAX_DESCRIPTION_SIZE) {
-                content = content + '...'
+                content = content + '...';
             }
-            var $content = $('<p>').html(content)
+            const $content = $('<p>').html(content);
 
-            $link.appendTo($title)
-            $title.appendTo($li)
-            $content.appendTo($li)
-            $li.appendTo($searchList)
-        })
-        $('.body-inner').scrollTop(0)
+            $title.append($link);
+            $li.append($title);
+            $li.append($content);
+            $searchList.append($li);
+        });
+        $('.body-inner').scrollTop(0);
     }
 
     function escapeRegExp(keyword) {
