@@ -1,5 +1,5 @@
 {
-  "name": "gitbook-plugin-search-plus",
+  "name": "honkit-plugin-search-plus",
   "version": "1.0.4-alpha-3",
   "description": "gitbook powerful search plugin",
   "main": "index.js",
