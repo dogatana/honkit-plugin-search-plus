@@ -26,16 +26,12 @@ module.exports = {
 
             this.log.debug.ln('index page', page.path);
 
-            console.log(page);
-
             let text = page.content;
 
-            // strip HTML tags
+            // Strip HTML tags
             text = text.replace(/<[^>]+>/g, '');
-
-            // shrink whitespaces to one space
+            // shrink whitespaces to one space, \x7f will be used as a marker for highlighting
             text = text.replace(/[\n \x7f]+/g, ' ');
-
             // unescape HTML
             text = Html.decode(text);
 
@@ -45,8 +41,6 @@ module.exports = {
             if (page.search) {
                 keywords = page.search.keywords || [];
             }
-
-            console.log("search text:" +  text);
 
             // Add to index
             const doc = {
