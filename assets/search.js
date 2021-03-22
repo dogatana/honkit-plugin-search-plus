@@ -97,8 +97,8 @@ require([
 
         var results = []
         var index = -1
-        for (var page in INDEX_DATA) {
-            var store = INDEX_DATA[page]
+        for (let i in INDEX_DATA) {
+            var store = INDEX_DATA[i]
             var keyword = originKeyword.toLowerCase() // ignore case
             var hit = false
             if (store.keywords && ~store.keywords.split(/\s+/).indexOf(keyword.split(':').pop())) {
@@ -113,7 +113,7 @@ require([
                 hit || ~(index = store.body.toLowerCase().indexOf(keyword))
             ) {
                 results.push({
-                    url: page,
+                    url: store.url,
                     title: store.title,
                     body: formatText(
                         store.body.substr(Math.max(0, index - 50), MAX_DESCRIPTION_SIZE),
