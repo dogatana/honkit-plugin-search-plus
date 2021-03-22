@@ -66,12 +66,12 @@ module.exports = {
                 return;
 
             }
-            this.log.debug('maxDepth: ', maxDepth + '\n');
+            this.log.debug('maxDepth: ', maxDepth, '\n');
 
             // Sort index by level
             documentsStore.sort((p1, p2) => levelToOrder(p1.level) - levelToOrder(p2.level));
-            for (const p of documentsStore) {
-                this.log.debug('index[' + levelToOrder(p.level) + ']', p.level, p.title, '\n');
+            for (const page of documentsStore) {
+                this.log.debug('index[' + levelToOrder(page.level) + ']', page.level, page.title, '\n');
             }
 
             this.log.debug.ln('write search index');
