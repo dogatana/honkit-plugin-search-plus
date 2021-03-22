@@ -92,50 +92,43 @@ require([
         return String(keyword).replace(/([-.*+?^${}()|[\]/\\])/g, '\\$1')
     }
 
-    function query(originKeyword) {
-        if (originKeyword == null || originKeyword.trim() === '') return
+    function query(searchString) {
+        if (!searchString) {
+            return;
+        } else if (typeof searchString === 'string' && searchString.trim() === "") {
+            return;
+        }
 
-        var results = []
-        var index = -1
-        for (let i in INDEX_DATA) {
-            var store = INDEX_DATA[i]
-            var keyword = originKeyword.toLowerCase() // ignore case
-            var hit = false
-            if (store.keywords && ~store.keywords.split(/\s+/).indexOf(keyword.split(':').pop())) {
-                if (/.:./.test(keyword)) {
-                    keyword = keyword.split(':').slice(0, -1).join(':')
-                } else {
-                    hit = true
-                }
-            }
-            var keywordRe = new RegExp('(' + escapeRegExp(keyword) + ')', 'gi')
-            if (
-                hit || ~(index = store.body.toLowerCase().indexOf(keyword))
-            ) {
+        const searchReg = new RegExp(escapeRegExp(searchString), 'i');
+        const replaceReg = new RegExp('(' + escapeRegExp(searchString) + ')', 'gi');
+
+        const results = []
+        for (const i in INDEX_DATA) {
+            const store = INDEX_DATA[i]
+            const index = store.body.search(searchReg);
+            if (index !== -1) {
                 results.push({
                     url: store.url,
                     title: store.title,
                     body: formatText(
                         store.body.substr(Math.max(0, index - 50), MAX_DESCRIPTION_SIZE),
-                        keywordRe)
+                        replaceReg)
                 });
             }
         }
         displayResults({
             count: results.length,
-            query: keyword,
+            query: searchString,
             results: results
         })
     }
 
-    function formatText(text, keywordRe) {
-        let result = text.replace(keywordRe, '\x7f$1\x7f');
+    function formatText(text, reg) {
+        let result = text.replace(reg, '\x7f$1\x7f');
         result = escapeHTML(result);
-        console.log("result:", result);
         result =  result.replace(
             /\x7f([^\x7f]+)\x7f/g,
             '<span class="search-highlight-keyword">' + escapeHTML('$1') + '</span>');
-        console.log("result:", result);
         return result;
     }
 
