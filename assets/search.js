@@ -2,18 +2,12 @@ require([
     'gitbook',
     'jquery'
 ], function (gitbook, $) {
-    var MAX_DESCRIPTION_SIZE = 500
-    var state = gitbook.state
-    var INDEX_DATA = {}
-    var usePushState = (typeof window.history.pushState !== 'undefined')
+    const MAX_DESCRIPTION_SIZE = 500
+    let INDEX_DATA = {}
+    const usePushState = (typeof window.history.pushState !== 'undefined')
 
     // DOM Elements
-    var $body = $('body')
-    var $bookSearchResults
-    var $searchList
-    var $searchTitle
-    var $searchResultsCount
-    var $searchQuery
+    const $body = $('body')
 
     // Throttle search
     function throttle(fn, wait) {
@@ -89,7 +83,7 @@ require([
 
     function escapeRegExp(keyword) {
         // escape regexp prevserve word
-        return String(keyword).replace(/([-.*+?^${}()|[\]/\\])/g, '\\$1')
+        return String(keyword).replace(/([-.*+?^${}()|[\]/\\])/g, '\\$1');
     }
 
     function query(searchString) {
@@ -103,7 +97,7 @@ require([
         const replaceReg = new RegExp('(' + escapeRegExp(searchString) + ')', 'gi');
 
         const results = []
-        for (const i in INDEX_DATA) {
+        for (let i in INDEX_DATA) {
             const store = INDEX_DATA[i]
             const index = store.body.search(searchReg);
             if (index !== -1) {
@@ -120,7 +114,7 @@ require([
             count: results.length,
             query: searchString,
             results: results
-        })
+        });
     }
 
     function formatText(text, reg) {
@@ -150,35 +144,32 @@ require([
 
     function launchSearch(keyword) {
         // Add class for loading
-        $body.addClass('with-search')
-        $body.addClass('search-loading')
+        $body.addClass('with-search');
+        $body.addClass('search-loading');
 
         function doSearch() {
-            query(keyword)
-            $body.removeClass('search-loading')
+            query(keyword);
+            $body.removeClass('search-loading');
         }
 
-        throttle(doSearch)()
+        throttle(doSearch)();
     }
 
     function closeSearch() {
-        $body.removeClass('with-search')
-        $('#book-search-results').removeClass('open')
+        $body.removeClass('with-search');
+        $('#book-search-results').removeClass('open');
     }
 
     function bindSearch() {
-        // Bind DOM
-        var $body = $('body')
-
         // Launch query based on input content
         function handleUpdate() {
-            var $searchInput = $('#book-search-input input')
-            var keyword = $searchInput.val()
+            const $searchInput = $('#book-search-input input');
+            const keyword = $searchInput.val();
 
             if (keyword.length === 0) {
-                closeSearch()
+                closeSearch();
             } else {
-                launchSearch(keyword)
+                launchSearch(keyword);
             }
         }
 
@@ -188,112 +179,112 @@ require([
                     var uri = updateQueryString('q', $(this).val())
                     window.history.pushState({
                         path: uri
-                    }, null, uri)
+                    }, null, uri);
                 }
             }
-            handleUpdate()
+            handleUpdate();
         })
 
         // Push to history on blur
         $body.on('blur', '#book-search-input input', function (e) {
             // Update history state
             if (usePushState) {
-                var uri = updateQueryString('q', $(this).val())
+                var uri = updateQueryString('q', $(this).val());
                 window.history.pushState({
                     path: uri
-                }, null, uri)
+                }, null, uri);
             }
         })
     }
 
     gitbook.events.on('start', function () {
         bindSearch()
-        $.getJSON(state.basePath + '/search_plus_index.json').then(function (data) {
-            INDEX_DATA = data
-            showResult()
-            closeSearch()
-        })
-    })
+        $.getJSON(gitbook.state.basePath + '/search_plus_index.json').then(function (data) {
+            INDEX_DATA = data;
+            showResult();
+            closeSearch();
+        });
+    });
 
-    var markConfig = {
+    const markConfig = {
         'ignoreJoiners': true,
         'acrossElements': true,
         'separateWordSearch': false
-    }
+    };
     // highlight
-    var highLightPageInner = function (keyword) {
-        var pageInner = $('.page-inner')
+    function highLightPageInner(keyword) {
+        var pageInner = $('.page-inner');
         if (/(?:(.+)?\:)(.+)/.test(keyword)) {
-            pageInner.mark(RegExp.$1, markConfig)
+            pageInner.mark(RegExp.$1, markConfig);
         }
-        pageInner.mark(keyword, markConfig)
+        pageInner.mark(keyword, markConfig);
 
         setTimeout(function () {
-            var mark = $('mark[data-markjs="true"]')
+            var mark = $('mark[data-markjs="true"]');
             if (mark.length) {
-                mark[0].scrollIntoView()
+                mark[0].scrollIntoView();
             }
-        }, 100)
+        }, 100);
     }
 
     function showResult() {
         var keyword, type
         if (/\b(q|h)=([^&]+)/.test(window.location.search)) {
-            type = RegExp.$1
-            keyword = decodeURIComponent(RegExp.$2)
+            type = RegExp.$1;
+            keyword = decodeURIComponent(RegExp.$2);
             if (type === 'q') {
-                launchSearch(keyword)
+                launchSearch(keyword);
             } else {
-                highLightPageInner(keyword)
+                highLightPageInner(keyword);
             }
-            $('#book-search-input input').val(keyword)
+            $('#book-search-input input').val(keyword);
         }
     }
 
-    gitbook.events.on('page.change', showResult)
+    gitbook.events.on('page.change', showResult);
 
     function updateQueryString(key, value) {
-        value = encodeURIComponent(value)
+        value = encodeURIComponent(value);
 
         var url = window.location.href.replace(/([?&])(?:q|h)=([^&]+)(&|$)/, function (all, pre, value, end) {
             if (end === '&') {
-                return pre
+                return pre;
             }
-            return ''
-        })
-        var re = new RegExp('([?&])' + key + '=.*?(&|#|$)(.*)', 'gi')
-        var hash
+            return '';
+        });
+        var re = new RegExp('([?&])' + key + '=.*?(&|#|$)(.*)', 'gi');
+        var hash;
 
         if (re.test(url)) {
             if (typeof value !== 'undefined' && value !== null) {
-                return url.replace(re, '$1' + key + '=' + value + '$2$3')
+                return url.replace(re, '$1' + key + '=' + value + '$2$3');
             } else {
-                hash = url.split('#')
-                url = hash[0].replace(re, '$1$3').replace(/(&|\?)$/, '')
+                hash = url.split('#');
+                url = hash[0].replace(re, '$1$3').replace(/(&|\?)$/, '');
                 if (typeof hash[1] !== 'undefined' && hash[1] !== null) {
-                    url += '#' + hash[1]
+                    url += '#' + hash[1];
                 }
-                return url
+                return url;
             }
         } else {
             if (typeof value !== 'undefined' && value !== null) {
-                var separator = url.indexOf('?') !== -1 ? '&' : '?'
-                hash = url.split('#')
-                url = hash[0] + separator + key + '=' + value
+                var separator = url.indexOf('?') !== -1 ? '&' : '?';
+                hash = url.split('#');
+                url = hash[0] + separator + key + '=' + value;
                 if (typeof hash[1] !== 'undefined' && hash[1] !== null) {
-                    url += '#' + hash[1]
+                    url += '#' + hash[1];
                 }
-                return url
+                return url;
             } else {
-                return url
+                return url;
             }
         }
     }
     window.addEventListener('click', function (e) {
         if (e.target.tagName === 'A' && e.target.getAttribute('data-need-reload')) {
             setTimeout(function () {
-                window.location.reload()
-            }, 100)
+                window.location.reload();
+            }, 100);
         }
-    }, true)
+    }, true);
 })
