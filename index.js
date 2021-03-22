@@ -31,7 +31,6 @@ module.exports = {
                 maxDepth = depth;
             }
 
-
             let text = page.content;
 
             // Strip HTML tags
@@ -72,7 +71,7 @@ module.exports = {
             // Sort index by level
             documentsStore.sort((p1, p2) => levelToOrder(p1.level) - levelToOrder(p2.level));
             for (const p of documentsStore) {
-                this.log.debug('index[' + levelToOrder(p.level) + '] ', p.level +  ' ' + p.title + '\n');
+                this.log.debug('index[' + levelToOrder(p.level) + ']', p.level, p.title, '\n');
             }
 
             this.log.debug.ln('write search index');
