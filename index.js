@@ -51,7 +51,7 @@ module.exports = {
                 title: page.title,
                 level: page.level,
                 summary: page.description,
-                keywords: keywords.join(' '),
+                keywords: keywords, // This should not be joined
                 body: text
             };
 
