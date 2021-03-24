@@ -27,9 +27,7 @@ module.exports = {
 
             // Update maxDepth
             const depth = levelToDepth(page.level);
-            if (depth > maxDepth) {
-                maxDepth = depth;
-            }
+            maxDepth = Math.max(maxDepth, depth);
 
             let text = page.content;
 
