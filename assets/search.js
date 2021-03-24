@@ -176,7 +176,7 @@ require([
         $body.on('keyup', '#book-search-input input', function (e) {
             if (e.keyCode === 13) {
                 if (usePushState) {
-                    var uri = updateQueryString('q', $(this).val())
+                    const uri = updateQueryString('q', $(this).val())
                     window.history.pushState({
                         path: uri
                     }, null, uri);
@@ -189,7 +189,7 @@ require([
         $body.on('blur', '#book-search-input input', function (e) {
             // Update history state
             if (usePushState) {
-                var uri = updateQueryString('q', $(this).val());
+                const uri = updateQueryString('q', $(this).val());
                 window.history.pushState({
                     path: uri
                 }, null, uri);
@@ -213,14 +213,14 @@ require([
     };
     // highlight
     function highLightPageInner(keyword) {
-        var pageInner = $('.page-inner');
+        const pageInner = $('.page-inner');
         if (/(?:(.+)?\:)(.+)/.test(keyword)) {
             pageInner.mark(RegExp.$1, markConfig);
         }
         pageInner.mark(keyword, markConfig);
 
         setTimeout(function () {
-            var mark = $('mark[data-markjs="true"]');
+            const mark = $('mark[data-markjs="true"]');
             if (mark.length) {
                 mark[0].scrollIntoView();
             }
@@ -228,10 +228,9 @@ require([
     }
 
     function showResult() {
-        var keyword, type
         if (/\b(q|h)=([^&]+)/.test(window.location.search)) {
-            type = RegExp.$1;
-            keyword = decodeURIComponent(RegExp.$2);
+            const type = RegExp.$1;
+            const keyword = decodeURIComponent(RegExp.$2);
             if (type === 'q') {
                 launchSearch(keyword);
             } else {
@@ -246,20 +245,19 @@ require([
     function updateQueryString(key, value) {
         value = encodeURIComponent(value);
 
-        var url = window.location.href.replace(/([?&])(?:q|h)=([^&]+)(&|$)/, function (all, pre, value, end) {
+        let url = window.location.href.replace(/([?&])(?:q|h)=([^&]+)(&|$)/, function (all, pre, value, end) {
             if (end === '&') {
                 return pre;
             }
             return '';
         });
-        var re = new RegExp('([?&])' + key + '=.*?(&|#|$)(.*)', 'gi');
-        var hash;
+        const re = new RegExp('([?&])' + key + '=.*?(&|#|$)(.*)', 'gi');
 
         if (re.test(url)) {
             if (typeof value !== 'undefined' && value !== null) {
                 return url.replace(re, '$1' + key + '=' + value + '$2$3');
             } else {
-                hash = url.split('#');
+                const hash = url.split('#');
                 url = hash[0].replace(re, '$1$3').replace(/(&|\?)$/, '');
                 if (typeof hash[1] !== 'undefined' && hash[1] !== null) {
                     url += '#' + hash[1];
@@ -268,8 +266,8 @@ require([
             }
         } else {
             if (typeof value !== 'undefined' && value !== null) {
-                var separator = url.indexOf('?') !== -1 ? '&' : '?';
-                hash = url.split('#');
+                const separator = url.indexOf('?') !== -1 ? '&' : '?';
+                const hash = url.split('#');
                 url = hash[0] + separator + key + '=' + value;
                 if (typeof hash[1] !== 'undefined' && hash[1] !== null) {
                     url += '#' + hash[1];
