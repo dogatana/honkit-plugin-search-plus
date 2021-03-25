@@ -15,6 +15,11 @@ Here are some changes.
 - add sequence number to each search result
 - keyword feature is removed because it does not match requirements
 
+## Versions
+
+- 1.0.1 add namespace to package name
+- 1.0.0 initial release
+
 Hereinafter, original README.md starts.
 
 ---
