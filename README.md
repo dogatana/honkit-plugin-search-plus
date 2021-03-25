@@ -1,4 +1,23 @@
-# gitbook-search-plus
+# honkit-plugin-serach-plus
+
+## fork of gitbook-plugin-search-plus
+
+This HonKit pulgin is a fork of https://github.com/lwdgit/gitbook-plugin-search-plus.
+
+The behavior of the default search plugin is not intuitive especially for Japanese
+that is not "word"-base text.  
+gitbook-plugin-search-plus is more straightforward but seems to have some points to be improved.
+
+Here are some changes.
+- preserve full text of page to be searched
+- characteres like '<', '>' are preserved
+- search results are sorted by page summary
+- add sequence number to each search result
+- keyword feature is removed because it does not match requirements
+
+Hereinafter, original README.md starts.
+
+---
 
 A powerful search plugin for GitBook.
 
