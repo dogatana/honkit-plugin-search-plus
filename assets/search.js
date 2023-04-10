@@ -58,7 +58,7 @@ require([
             seq++;
 
             const $link = $('<a>', {
-                'href': gitbook.state.basePath + '/' + item.url + '?h=' + encodeURIComponent(res.query),
+                'href': getAbsoluteURL(gitbook.state.basePath + '/' + item.url) + '?h=' + encodeURIComponent(res.query),
                 'text': item.title,
                 'data-is-search': 1
             });
@@ -79,6 +79,12 @@ require([
             $searchList.append($li);
         });
         $('.body-inner').scrollTop(0);
+    }
+
+    function getAbsoluteURL(path) {
+      const base = location.href;
+      const url = new URL(path, base);
+      return url.href;
     }
 
     function escapeRegExp(keyword) {
