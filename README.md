@@ -17,6 +17,7 @@ Here are some changes.
 
 ## Versions
 
+- 1.0.2 fix an issue, does not display left/right icons(<>) after jump form the search result
 - 1.0.1 add namespace to package name
 - 1.0.0 initial release
 
